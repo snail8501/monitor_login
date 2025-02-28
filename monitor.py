@@ -25,7 +25,7 @@ def get_ip_info(ip):
         if response.status_code == 200:
             data = response.json()
             if data["status"] == "success":
-                result = f"{data['country']}->{data['city']}"
+                result = f"{data['country']}->{data['regionName']}"
                 ip_cache[ip] = result
                 return result
     except requests.RequestException as e:
