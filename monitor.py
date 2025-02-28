@@ -6,8 +6,8 @@ import datetime
 import argparse
 
 # Regular expressions for SSH login success and failure
-LOG_PATTERN_SUCCESS = re.compile(r'^(?:\w{3} \d{1,2} \d{2}:\d{2}:\d{2})\s+\S+\s+sshd\[\d+\]:\s+Accepted (\w+) for (\w+) from ([\d\.]+)')
-LOG_PATTERN_FAILURE = re.compile(r'^(?:\w{3} \d{1,2} \d{2}:\d{2}:\d{2})\s+\S+\s+sshd\[\d+\]:\s+Failed (\w+) for (\w+) from ([\d\.]+)')
+LOG_PATTERN_SUCCESS = re.compile(r'^(\w{3} \d{2} \d{2}:\d{2}:\d{2})\s+\S+\s+sshd\[\d+\]:\s+Accepted (\w+) for (\w+) from ([\d\.]+)')
+LOG_PATTERN_FAILURE = re.compile(r'^(\w{3} \d{2} \d{2}:\d{2}:\d{2})\s+\S+\s+sshd\[\d+\]:\s+ailed (\w+) for (\w+) from ([\d\.]+)')
 LOG_PATTERN_SUCCESS_ISO = re.compile(r'^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})\.\d+[\+\-]\d{2}:\d{2}\s+\S+\s+sshd\[\d+\]:\s+Accepted (\w+) for (\w+) from ([\d\.]+)')
 LOG_PATTERN_FAILURE_ISO = re.compile(r'^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})\.\d+[\+\-]\d{2}:\d{2}\s+\S+\s+sshd\[\d+\]:\s+Failed (\w+) for (\w+) from ([\d\.]+)')
 
@@ -86,16 +86,16 @@ def process_line(line, webhook_token):
 
         if match_success:
             timestamp, logintype, username, ip = match_success.groups()
-            current_year = datetime.now().year
-            fdt = datetime.strptime(f"{current_year} {timestamp}", "%Y %b %d %H:%M:%S")
-            formatted_timestamp = dt.strftime("%Y-%m-%dT%H:%M:%S")
+            current_year = datetime.datetime.now().year
+            fdt = datetime.datetime.strptime(f"{current_year} {timestamp}", "%Y %b %d %H:%M:%S")
+            formatted_timestamp = fdt.strftime("%Y-%m-%dT%H:%M:%S")
             if formatted_time < formatted_timestamp:
                 send_alert('login_success', logintype, username, ip, formatted_timestamp, line, webhook_token)
         elif match_failure:
             timestamp, logintype, username, ip = match_failure.groups()
-            current_year = datetime.now().year
-            fdt = datetime.strptime(f"{current_year} {timestamp}", "%Y %b %d %H:%M:%S")
-            formatted_timestamp = dt.strftime("%Y-%m-%dT%H:%M:%S")
+            current_year = datetime.datetime.now().year
+            fdt = datetime.datetime.strptime(f"{current_year} {timestamp}", "%Y %b %d %H:%M:%S")
+            formatted_timestamp = fdt.strftime("%Y-%m-%dT%H:%M:%S")
             if formatted_time < formatted_timestamp:
                 send_alert('login_failure', logintype, username, ip, formatted_timestamp, line, webhook_token)
         elif match_success_iso:
