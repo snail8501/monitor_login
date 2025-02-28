@@ -1,7 +1,7 @@
 version: '3.8'
 services:
-  login-monitor:
-    image: login-monitor
+  monitor-login:
+    image: monitor-login
     command: python -u /app/monitor.py /app/auth.log webhook_weixin_token
     volumes:
       - /var/log/auth.log:/app/auth.log:ro

@@ -1,4 +1,4 @@
-# monitor_login
+# monitor-login
 Monitor Ubuntu SSH login and send alarm notifications to WeChat.
 
 This project monitors SSH login events on an Ubuntu system and sends alarm notifications via WeChat (using a webhook). It leverages Docker to run a Python script that reads the SSH logs and sends alerts for both successful and failed login attempts.
@@ -16,7 +16,7 @@ This project monitors SSH login events on an Ubuntu system and sends alarm notif
 To build the Docker image, use the following command:
 
 ```bash
-docker build -t monitor_login .
+docker build -t monitor-login .
 ```
 This command builds the Docker image with the tag monitor_login using the Dockerfile in the current directory.
 
@@ -27,8 +27,8 @@ Create a docker-compose.yml file with the following content:
 ```bash
 version: '3.8'
 services:
-  login-monitor:
-    image: monitor_login
+  monitor-login:
+    image: monitor-login
     command: python -u /app/monitor.py /app/auth.log webhook_weixin_token
     volumes:
       - /var/log/auth.log:/app/auth.log:ro
