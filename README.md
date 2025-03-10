@@ -29,9 +29,9 @@ version: '3.8'
 services:
   monitor-login:
     image: monitor-login
-    command: python -u /app/monitor.py /app/auth.log webhook_weixin_token
+    command: python -u /app/monitor.py /app/log/auth.log webhook_weixin_token
     volumes:
-      - /var/log/auth.log:/app/auth.log:ro
+      - /var/log:/app/log:ro
     restart: always
 ```
 
@@ -42,7 +42,7 @@ This file defines a service login-monitor that runs the monitor.py script to mon
 Once the docker-compose.yml file is set up, run the following command to start the container:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 This will start the login-monitor service in detached mode. The -d flag ensures the container runs in the background.
